@@ -1,0 +1,924 @@
+:root {
+  color-scheme: dark;
+  --bg: #07091e;
+  --panel: rgba(10, 15, 44, .94);
+  --border: #303b78;
+  --text: #f2f3ff;
+  --muted: #a6b1d8;
+  --purple: #8545ff;
+  --blue: #318cff;
+  --cyan: #20cbd7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 12px 24px 40px;
+  overflow-y: auto;
+  overflow-x: clip;
+
+  color: var(--text);
+  font-family: "Segoe UI", Arial, sans-serif;
+
+  background:
+    radial-gradient(ellipse at 50% 0%, #42208066, transparent 52%),
+    linear-gradient(#050719d9, #050719ed),
+    url("Background%2040.png") center / cover fixed,
+    var(--bg);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: var(--text);
+  cursor: pointer;
+  transition: .18s;
+}
+
+button:hover {
+  filter: brightness(1.14);
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+
+  border: 1px solid #304783;
+  border-radius: 11px;
+
+  color: var(--text);
+  background: #0b1434;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8491bd;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #985cff;
+  box-shadow: 0 0 0 3px #874aff20;
+}
+
+select option {
+  color: white;
+  background: #0b1434;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+textarea {
+  resize: vertical;
+}
+
+label {
+  display: block;
+  margin: 0 0 6px;
+  color: #c3ccef;
+  font-size: 12px;
+}
+
+/* Навігація */
+
+.navbar {
+  max-width: 1700px;
+  min-height: 58px;
+  margin: 0 auto;
+
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  border: 1px solid #4b4c9a;
+  border-radius: 16px;
+
+  background: #090c27ed;
+  box-shadow: 0 8px 35px #0005;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.brand-icon,
+.heading-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a95cff, #6231f0);
+  font-size: 22px;
+}
+
+.navbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.nav-link {
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+
+  background: transparent;
+  color: #b9c1e0;
+  font-size: 13px;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: white;
+  background: linear-gradient(110deg, #8e44ff, #6333e8);
+}
+
+.online {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 12px;
+  white-space: nowrap;
+  color: #c1c8e4;
+}
+
+.online span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+
+  background: #23d9a0;
+  box-shadow: 0 0 12px #23d9a0;
+}
+
+/* Основна сторінка */
+
+main {
+  max-width: 1700px;
+  margin: 0 auto;
+}
+
+.hero {
+  min-height: 145px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+
+  padding: 12px 10px;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+
+  color: #a28aff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(27px, 2.5vw, 40px);
+  letter-spacing: -1px;
+}
+
+h1 span {
+  color: #a578ff;
+}
+
+.muted {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.date-card {
+  padding: 12px 17px;
+  min-width: 145px;
+
+  border: 1px solid #55469c;
+  border-radius: 15px;
+  background: #12102e;
+}
+
+.date-card small,
+.date-card strong {
+  display: block;
+}
+
+.date-card small {
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.date-card strong {
+  font-size: 17px;
+}
+
+/* Чотири головні панелі */
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.panel {
+  min-width: 0;
+  padding: 15px;
+
+  border: 1px solid var(--border);
+  border-radius: 17px;
+
+  background: var(--panel);
+  box-shadow: inset 0 0 24px #372a8612, 0 12px 30px #0003;
+  backdrop-filter: blur(14px);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.heading-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  font-size: 21px;
+}
+
+.purple {
+  background: linear-gradient(135deg, #a14fff, #6730e9);
+}
+
+.blue {
+  background: linear-gradient(135deg, #4ca6ff, #2768f5);
+}
+
+.cyan {
+  background: linear-gradient(135deg, #27d8d4, #098eae);
+}
+
+.panel-heading small {
+  display: block;
+  color: #909dce;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.panel-heading h2,
+h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Кнопки */
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.voice-button {
+  padding: 10px 13px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.primary-button {
+  border: 0;
+  background: linear-gradient(105deg, #984aff, #6534e9);
+  box-shadow: 0 5px 20px #7835ff22;
+}
+
+.secondary-button {
+  border: 1px solid #3a4b89;
+  background: #111735;
+}
+
+.danger-button {
+  border: 1px solid #a33d68;
+  background: #37172f;
+  color: #ffb5ce;
+}
+
+.full-button {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 12px;
+}
+
+#taskForm .primary-button {
+  width: 100%;
+}
+
+.small-status {
+  min-height: 12px;
+  color: #a9b5e0;
+  font-size: 11px;
+}
+
+/* Голосове керування */
+
+.voice-button {
+  width: 100%;
+  border: 1px solid #704de8;
+  background: #15143c;
+}
+
+.voice-button.listening {
+  background: #45184c;
+  border-color: #e54bcf;
+}
+
+.examples {
+  margin-top: 13px;
+  padding-top: 10px;
+
+  border-top: 1px solid #242c58;
+  color: #b3bee2;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Завдання */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  margin: 0 0 10px;
+  flex-shrink: 0;
+}
+
+.filter {
+  padding: 7px 10px;
+
+  border: 1px solid #30375f;
+  border-radius: 9px;
+
+  color: #b7c1e1;
+  background: #111632;
+  font-size: 11px;
+}
+
+.filter.active {
+  border-color: transparent;
+  background: linear-gradient(120deg, #9344ff, #6934e6);
+  color: white;
+}
+
+.task-list {
+  list-style: none;
+
+  display: grid;
+  gap: 8px;
+
+  padding: 0;
+  margin: 0 0 10px;
+}
+
+.task-item {
+  min-width: 0;
+  padding: 10px;
+
+  border: 1px solid #2e3d76;
+  border-radius: 11px;
+  background: #0b1331;
+
+  overflow-wrap: anywhere;
+}
+
+.task-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.task-check {
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: #9854ff;
+}
+
+.task-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.task-item.completed .task-title {
+  color: #8e99b8;
+  text-decoration: line-through;
+}
+
+.task-meta {
+  margin-top: 5px;
+  color: #a6b2d9;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.task-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.task-actions button {
+  padding: 6px 8px;
+
+  border: 1px solid #354477;
+  border-radius: 8px;
+  background: #141a3b;
+  font-size: 11px;
+}
+
+.task-actions .delete-button {
+  color: #ff9db8;
+}
+
+.task-open {
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  color: #a993ff;
+  font-size: 19px;
+}
+
+.empty-message {
+  padding: 16px 8px;
+  text-align: center;
+
+  color: #929dbf;
+  border: 1px dashed #303966;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* Статистика (Головна картка) */
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 8px;
+  margin-bottom: 7px;
+
+  border: 1px solid #2b365f;
+  border-radius: 11px;
+  background: #101633;
+}
+
+.stat-icon {
+  display: grid;
+  place-items: center;
+
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+}
+
+.green {
+  color: #55eec0;
+  background: #123e3b;
+}
+
+.orange {
+  color: #ffc170;
+  background: #392b3c;
+}
+
+.stat-row strong,
+.stat-row small {
+  display: block;
+}
+
+.stat-row strong {
+  font-size: 16px;
+}
+
+.stat-row small {
+  margin-top: 3px;
+  color: #aab4d4;
+  font-size: 10px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 11px 0 7px;
+  color: #b6c0e0;
+  font-size: 11px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: #131b3d;
+  border: 1px solid #2c386e;
+  overflow: hidden;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--purple), var(--blue), var(--cyan));
+  box-shadow: 0 0 12px #8545ff77;
+  transition: width .35s ease;
+}
+
+/* Додаткові вкладки (Усі завдання, Статистика, Довідка) */
+
+.view-panel {
+  padding: 22px 26px;
+}
+
+.view-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #263166;
+}
+
+.view-heading h2 {
+  font-size: 22px;
+}
+
+/* Детальна статистика */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  padding: 18px 20px;
+  border: 1px solid #32407c;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #10173b, #0b1029);
+  box-shadow: 0 8px 24px #0003;
+}
+
+.stat-card small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffffff, #b494ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#statisticsView h3 {
+  margin: 22px 0 12px;
+  font-size: 16px;
+  color: #dce2ff;
+}
+
+.category-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.category-stats > div {
+  padding: 14px 16px;
+  border: 1px solid #2b386e;
+  border-radius: 12px;
+  background: #0d1433;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Центр допомоги */
+
+.help-layout {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.help-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid #2b366b;
+border-radius: 15px;
+background: #0b112c;
+}
+.help-menu-title {
+margin: 4px 8px 8px;
+color: #8f9cd0;
+font-size: 10px;
+font-weight: 800;
+letter-spacing: 2px;
+}
+.help-nav {
+width: 100%;
+text-align: left;
+padding: 10px 13px;
+border: 1px solid transparent;
+border-radius: 10px;
+background: transparent;
+color: #bec7ea;
+font-size: 13px;
+font-weight: 600;
+}
+.help-nav:hover {
+background: #151d47;
+color: #ffffff;
+}
+.help-nav.active {
+background: linear-gradient(110deg, #8e44ff, #5b31e0);
+color: #ffffff;
+box-shadow: 0 4px 16px #7d3cff33;
+}
+.help-content {
+padding: 22px 26px;
+border: 1px solid #2b366b;
+border-radius: 16px;
+background: #0b112c;
+min-height: 360px;
+}
+.help-topic {
+display: none;
+}
+.help-topic.active {
+display: block;
+}
+.help-topic h2 {
+font-size: 21px;
+margin-bottom: 12px;
+}
+.help-topic p,
+.help-topic li {
+color: #c5cef0;
+font-size: 14px;
+line-height: 1.65;
+}
+.help-info {
+margin-top: 16px;
+padding: 16px 20px;
+border-left: 3px solid var(--purple);
+border-radius: 12px;
+background: #11183d;
+}
+.help-info strong {
+display: block;
+margin-bottom: 8px;
+color: #ffffff;
+}
+.help-info ol,
+.help-info ul {
+margin: 0;
+padding-left: 20px;
+}
+.help-info li {
+margin-bottom: 6px;
+}
+/* Модальні вікна */
+dialog {
+  position: relative;
+  width: min(450px, 92vw);
+  padding: 26px 28px 24px;
+  overflow-x: hidden;
+
+  border: 1px solid #485499;
+  border-top-color: rgba(168, 145, 255, 0.5);
+  border-radius: 22px;
+
+  background:
+    radial-gradient(circle at 88% 10%, rgba(133, 69, 255, 0.24), transparent 50%),
+    linear-gradient(165deg, #0f163b 0%, #080c24 100%);
+  color: var(--text);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 28px 70px rgba(0, 0, 0, 0.85);
+}
+
+dialog::backdrop {
+  background: rgba(3, 5, 16, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+/* Шапка модального вікна */
+dialog header,
+dialog .modal-header,
+dialog > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(56, 70, 130, 0.5);
+}
+
+/* Кругла кнопка закриття ✕ у шапці вікна */
+dialog header button,
+dialog .modal-header button,
+dialog > div:first-child button,
+dialog .close-button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid #384685;
+  border-radius: 50%;
+  background: rgba(20, 28, 70, 0.9);
+  color: #b8c3eb;
+  font-size: 14px;
+  line-height: 1;
+}
+
+dialog header button:hover,
+dialog .modal-header button:hover,
+dialog > div:first-child button:hover,
+dialog .close-button:hover {
+  border-color: #985cff;
+  background: #8545ff;
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+/* Заголовки всередині вікна */
+dialog .eyebrow {
+  color: #a98eff;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  margin: 0 0 4px;
+}
+
+dialog h2 {
+  font-size: 19px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+dialog h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 12px 0 4px;
+  background: linear-gradient(90deg, #ffffff, #b794ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+dialog p {
+  color: #bdc6ea;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+
+/* Оформлення списку переваг */
+dialog ul {
+  list-style: none;
+  padding: 14px 16px;
+  margin: 16px 0 20px;
+
+  display: grid;
+  gap: 10px;
+
+  border: 1px solid #28356b;
+  border-radius: 14px;
+  background: rgba(11, 17, 46, 0.8);
+}
+
+dialog li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e4e9ff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+dialog .primary-button {
+  width: 100%;
+  padding: 12px 16px;
+  margin-top: 8px;
+  font-size: 14px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(133, 69, 255, 0.35);
+}
+/* Адаптивність */
+@media (max-width: 1200px) {
+.dashboard {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.stats-grid {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+}
+@media (max-width: 820px) {
+.help-layout {
+grid-template-columns: 1fr;
+}
+}
+@media (max-width: 720px) {
+body {
+padding: 10px 14px 30px;
+}
+.navbar,
+.hero,
+.view-heading {
+flex-direction: column;
+align-items: flex-start;
+}
+.dashboard,
+.stats-grid {
+grid-template-columns: 1fr;
+}
+}

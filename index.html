@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b24">
+  <title>StudyPlanner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="#home" class="brand"><span class="brand-icon">✦</span> StudyPlanner</a>
+    <nav>
+      <button class="nav-link active" data-view="home">⌂ Головна</button>
+      <button class="nav-link" data-view="tasks">☷ Завдання</button>
+      <button class="nav-link" data-view="statistics">◇ Статистика</button>
+      <button class="nav-link" data-view="help">❔ Довідка</button>
+      <button class="nav-link" data-modal="aboutModal">ⓘ Про проєкт</button>
+    </nav>
+    <div class="online"><span></span> Online</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">ТВІЙ НАВЧАЛЬНИЙ ПРОСТІР</p>
+        <h1>Плануй. <span>Виконуй.</span> Розвивайся.</h1>
+        <p class="muted">Усі навчальні завдання в одному місці</p>
+      </div>
+      <div class="date-card"><small>Сьогодні</small><strong id="todayDate">—</strong></div>
+    </section>
+
+    <section class="dashboard" id="homeView">
+      <article class="panel">
+        <div class="panel-heading"><span class="heading-icon purple">＋</span><div><small>НОВЕ ЗАВДАННЯ</small><h2>Додати завдання</h2></div></div>
+        <form id="taskForm">
+          <input id="taskInput" maxlength="180" placeholder="Назва завдання..." required>
+          <select id="taskCategory" aria-label="Категорія">
+            <option>Веброзробка</option><option>Математика</option>
+            <option>Українська мова</option><option>Історія</option><option>Інше</option>
+          </select>
+          <label for="taskDate">Термін виконання</label>
+          <input id="taskDate" type="date">
+          <select id="taskPriority" aria-label="Пріоритет">
+            <option value="Низький">🟢 Низький пріоритет</option>
+            <option value="Середній">🟡 Середній пріоритет</option>
+            <option value="Високий">🔴 Високий пріоритет</option>
+          </select>
+          <label for="taskDescription">Опис (необов'язково)</label>
+          <textarea id="taskDescription" rows="2" maxlength="1000" placeholder="Що потрібно зробити?"></textarea>
+          <button class="primary-button" type="submit">＋ Додати завдання</button>
+          <p id="formStatus" class="small-status" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading"><span class="heading-icon blue">🎙</span><div><small>ГОЛОСОВЕ КЕРУВАННЯ</small><h2>Керування голосом</h2></div></div>
+        <select id="languageSelect" aria-label="Мова голосового керування">
+          <option value="uk-UA">🇺🇦 Українська</option>
+          <option value="en-US">🇬🇧 English</option>
+          <option value="pl-PL">🇵🇱 Polski</option>
+        </select>
+        <button id="voiceButton" class="voice-button" type="button">🎤 Почати слухати</button>
+        <p id="voiceStatus" class="muted" aria-live="polite">Натисни кнопку та скажи команду.</p>
+        <div class="examples">
+          <p>💡 «Додай завдання зробити лабораторну»</p>
+          <p>💬 «Покажи мої завдання»</p>
+        </div>
+      </article>
+
+      <article class="panel" id="taskWorkspace">
+        <div class="panel-heading"><span class="heading-icon blue">✓</span><div><small>WORKSPACE</small><h2>Мої завдання</h2></div></div>
+        <div class="filters">
+          <button class="filter active" data-filter="all">Усі</button>
+          <button class="filter" data-filter="active">Активні</button>
+          <button class="filter" data-filter="completed">Виконані</button>
+        </div>
+        <ul id="taskList" class="task-list"></ul>
+        <p id="emptyMessage" class="empty-message">✦ Завдань поки немає</p>
+        <button class="secondary-button full-button" data-view="tasks">Відкрити всі завдання ↗</button>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading"><span class="heading-icon cyan">↗</span><div><small>OVERVIEW</small><h2>Статистика</h2></div></div>
+        <div class="stat-row"><span class="stat-icon purple">☷</span><div><strong id="totalCount">0</strong><small>Усього завдань</small></div></div>
+        <div class="stat-row"><span class="stat-icon green">✓</span><div><strong id="completedCount">0</strong><small>Виконано</small></div></div>
+        <div class="stat-row"><span class="stat-icon orange">◷</span><div><strong id="remainingCount">0</strong><small>Залишилось</small></div></div>
+        <div class="progress-label"><span>Загальний прогрес</span><strong id="progressText">0%</strong></div>
+        <div class="progress-track"><div id="progressBar"></div></div>
+        <button class="secondary-button full-button" data-view="statistics">Детальна статистика ↗</button>
+      </article>
+    </section>
+
+    <section id="tasksView" class="panel view-panel" hidden>
+      <div class="view-heading"><div><p class="eyebrow">WORKSPACE</p><h2>Усі навчальні завдання</h2></div><button class="secondary-button" data-view="home">← На головну</button></div>
+      <input id="taskSearch" placeholder="🔎 Пошук завдань...">
+      <div class="filters">
+        <button class="filter active" data-filter="all">Усі</button>
+        <button class="filter" data-filter="active">Активні</button>
+        <button class="filter" data-filter="completed">Виконані</button>
+      </div>
+      <ul id="allTaskList" class="task-list"></ul>
+      <p id="allEmptyMessage" class="empty-message">Завдань поки немає.</p>
+    </section>
+
+    <section id="statisticsView" class="panel view-panel" hidden>
+      <div class="view-heading"><div><p class="eyebrow">OVERVIEW</p><h2>Статистика навчання</h2></div><button class="secondary-button" data-view="home">← На головну</button></div>
+      <div class="stats-grid">
+        <div class="stat-card"><small>Усього завдань</small><strong id="detailTotal">0</strong></div>
+        <div class="stat-card"><small>Виконано</small><strong id="detailCompleted">0</strong></div>
+        <div class="stat-card"><small>Залишилося</small><strong id="detailRemaining">0</strong></div>
+        <div class="stat-card"><small>Прогрес</small><strong id="detailProgress">0%</strong></div>
+      </div>
+      <h3>За категоріями</h3>
+      <div id="categoryStats" class="category-stats"></div>
+      <h3>За пріоритетами</h3>
+      <div id="priorityStats" class="category-stats"></div>
+    </section>
+
+    <section id="helpView" class="panel view-panel help-panel" hidden>
+      <div class="view-heading">
+        <div>
+          <p class="eyebrow">HELP CENTER</p>
+          <h2>Центр допомоги</h2>
+        </div>
+        <button class="secondary-button" data-view="home">← На головну</button>
+      </div>
+
+      <div class="help-layout">
+        <aside class="help-sidebar">
+          <p class="help-menu-title">НАВІГАЦІЯ</p>
+          <button class="help-nav active" data-help-topic="start">🚀 Початок роботи</button>
+          <button class="help-nav" data-help-topic="tasks">📝 Керування завданнями</button>
+          <button class="help-nav" data-help-topic="filters">🔎 Пошук і фільтри</button>
+          <button class="help-nav" data-help-topic="statistics">📊 Статистика</button>
+          <button class="help-nav" data-help-topic="voice">🎙 Голосове керування</button>
+          <button class="help-nav" data-help-topic="ai">✧ Study AI</button>
+          <button class="help-nav" data-help-topic="storage">💾 Збереження даних</button>
+          <button class="help-nav" data-help-topic="problems">🛠 Вирішення проблем</button>
+        </aside>
+
+        <div class="help-content">
+          <article class="help-topic active" data-help-content="start">
+            <p class="eyebrow">WELCOME</p>
+            <h2>Ласкаво просимо до StudyPlanner!</h2>
+            <p>StudyPlanner — це твій особистий навчальний простір для планування завдань, контролю часу та відстеження результатів.</p>
+            <div class="help-info">
+              <strong>Як почати роботу?</strong>
+              <ol>
+                <li>Перейди на сторінку «Головна».</li>
+                <li>Введи назву нового завдання.</li>
+                <li>Обери категорію та пріоритет.</li>
+                <li>За бажанням встанови термін виконання.</li>
+                <li>Натисни «Додати завдання».</li>
+              </ol>
+            </div>
+            <div class="help-tip">💡 Порада: додавай завдання одразу після того, як отримав їх, щоб нічого не забути.</div>
+          </article>
+
+          <article class="help-topic" data-help-content="tasks">
+            <p class="eyebrow">TASK MANAGEMENT</p>
+            <h2>Керування завданнями</h2>
+            <p>У StudyPlanner можна створювати, переглядати, редагувати та видаляти навчальні завдання.</p>
+            <div class="help-info">
+              <strong>Додавання</strong>
+              <p>Заповни назву, категорію, дату та пріоритет, а потім натисни кнопку додавання.</p>
+            </div>
+            <div class="help-info">
+              <strong>Виконання</strong>
+              <p>Познач завдання виконаним за допомогою відповідного елемента керування у списку.</p>
+            </div>
+            <div class="help-info">
+              <strong>Редагування та видалення</strong>
+              <p>Відкрий деталі завдання, щоб переглянути його інформацію. Там доступні дії редагування та видалення.</p>
+            </div>
+            <div class="help-tip">💡 Рекомендуємо вказувати конкретні назви завдань, щоб їх було легко знаходити.</div>
+          </article>
+
+          <article class="help-topic" data-help-content="filters">
+            <p class="eyebrow">SEARCH & FILTERS</p>
+            <h2>Пошук і фільтри</h2>
+            <p>Коли завдань стає багато, використовуй пошук і фільтри для швидкої навігації.</p>
+            <div class="help-info">
+              <strong>Доступні фільтри</strong>
+              <ul>
+                <li>Усі — показує всі завдання.</li>
+                <li>Активні — показує завдання, які ще потрібно виконати.</li>
+                <li>Виконані — показує завершені завдання.</li>
+              </ul>
+            </div>
+            <div class="help-info">
+              <strong>Пошук</strong>
+              <p>На сторінці «Завдання» введи слово або частину назви в поле пошуку.</p>
+            </div>
+            <div class="help-tip">💡 Поєднуй пошук із фільтрами, щоб швидше знаходити потрібну інформацію.</div>
+          </article>
+
+          <article class="help-topic" data-help-content="statistics">
+            <p class="eyebrow">YOUR PROGRESS</p>
+            <h2>Статистика навчання</h2>
+            <p>Статистика допомагає оцінити виконану роботу та побачити загальний прогрес.</p>
+            <div class="help-info">
+              <strong>Основні показники</strong>
+              <ul>
+                <li>Усього завдань — загальна кількість записів.</li>
+                <li>Виконано — кількість завершених завдань.</li>
+                <li>Залишилося — кількість активних завдань.</li>
+                <li>Прогрес — відсоток виконаних завдань.</li>
+              </ul>
+            </div>
+            <div class="help-info">
+              <strong>Розподіл</strong>
+              <p>Можна переглядати завдання за навчальними категоріями та пріоритетами.</p>
+            </div>
+            <div class="help-tip">💡 Перевіряй статистику регулярно, щоб бачити власні результати.</div>
+          </article>
+
+          <article class="help-topic" data-help-content="voice">
+            <p class="eyebrow">VOICE CONTROL</p>
+            <h2>Голосове керування</h2>
+            <p>Голосове керування дає змогу взаємодіяти із застосунком за допомогою голосових команд.</p>
+            <div class="help-info">
+              <strong>Як користуватися?</strong>
+              <ol>
+                <li>Обери мову голосового керування.</li>
+                <li>Натисни «Почати слухати».</li>
+                <li>Дозволь браузеру доступ до мікрофона, якщо з'явиться запит.</li>
+                <li>Скажи команду та дочекайся її обробки.</li>
+              </ol>
+            </div>
+            <div class="help-info">
+              <strong>Приклади команд</strong>
+              <ul>
+                <li>«Додай завдання зробити лабораторну».</li>
+                <li>«Покажи мої завдання».</li>
+              </ul>
+            </div>
+            <div class="help-tip">💡 Для роботи голосового керування потрібен сумісний браузер і доступ до мікрофона.</div>
+          </article>
+
+          <article class="help-topic" data-help-content="ai">
+            <p class="eyebrow">SMART ASSISTANT</p>
+            <h2>Study AI</h2>
+            <p>Study AI — помічник, який може відповідати на запитання про навчання та допомагати планувати роботу.</p>
+            <div class="help-info">
+              <strong>Як поставити запитання?</strong>
+              <ol>
+                <li>Перейди до панелі Study AI.</li>
+                <li>Введи своє запитання.</li>
+                <li>Натисни «Запитати AI».</li>
+                <li>Дочекайся відповіді.</li>
+              </ol>
+            </div>
+            <div class="help-info">
+              <strong>Приклади запитань</strong>
+              <ul>
+                <li>«Скільки в мене завдань?»</li>
+                <li>«Допоможи скласти план навчання».</li>
+                <li>«Як краще організувати підготовку?»</li>
+              </ul>
+            </div>
+            <div class="help-tip">💡 Для роботи Study AI сервер застосунку має бути запущений і доступний.</div>
+          </article>
+
+          <article class="help-topic" data-help-content="storage">
+            <p class="eyebrow">DATA STORAGE</p>
+            <h2>Збереження даних</h2>
+            <p>Завдання StudyPlanner зберігаються локально у браузері за допомогою LocalStorage.</p>
+            <div class="help-info">
+              <strong>Що це означає?</strong>
+              <ul>
+                <li>Дані залишаються в тому браузері, де ти працюєш.</li>
+                <li>Після перезавантаження сторінки завдання мають залишатися доступними.</li>
+                <li>Дані не синхронізуються автоматично між різними пристроями.</li>
+              </ul>
+            </div>
+            <div class="help-tip">⚠️ Не очищай дані браузера, якщо хочеш зберегти свої завдання. Для важливої інформації варто мати резервну копію.</div>
+          </article>
+
+          <article class="help-topic" data-help-content="problems">
+            <p class="eyebrow">TROUBLESHOOTING</p>
+            <h2>Вирішення проблем</h2>
+            <div class="help-info">
+              <strong>Не працює Study AI</strong>
+              <p>Перевір, чи запущений сервер і чи доступний він за адресою, налаштованою у застосунку.</p>
+            </div>
+            <div class="help-info">
+              <strong>Не працює мікрофон</strong>
+              <p>Перевір дозвіл браузера на використання мікрофона та налаштування голосового керування.</p>
+            </div>
+            <div class="help-info">
+              <strong>Не знаходяться завдання</strong>
+              <p>Перевір правильність пошукового запиту та активний фільтр.</p>
+            </div>
+            <div class="help-info">
+              <strong>Зникли збережені дані</strong>
+              <p>Переконайся, що використовуєш той самий браузер і профіль. Перевір, чи не очищувалися дані сайту.</p>
+            </div>
+            <div class="help-tip">💡 Якщо проблема не зникає, перевір повідомлення про помилки в консолі браузера.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel ai-panel">
+      <div class="panel-heading"><span class="heading-icon purple">✧</span><div><small>SMART ASSISTANT</small><h2>Study AI</h2></div></div>
+      <p class="muted">Запитай про свої завдання або попроси скласти план навчання.</p>
+      <form id="aiForm" class="ai-form">
+        <input id="aiInput" maxlength="1000" placeholder="Наприклад: скільки в мене завдань?" required>
+        <button class="primary-button" type="submit">Запитати AI ↗</button>
+      </form>
+      <div id="aiAnswer" class="ai-answer" aria-live="polite">Тут з'явиться відповідь помічника.</div>
+    </section>
+
+    <footer class="footer">
+      <strong>✦ StudyPlanner</strong>
+      <span>Плануй навчання, досягай цілей.</span>
+      <span class="tech-tags">HTML5 · CSS3 · JavaScript</span>
+    </footer>
+    <p class="copyright">© 2026 StudyPlanner · Створено для студентів</p>
+  </main>
+
+  <dialog id="taskModal" class="app-modal">
+    <div class="modal-heading"><div><small>WORKSPACE</small><h2>Деталі завдання</h2></div><button class="close-modal" data-close="taskModal" aria-label="Закрити">✕</button></div>
+    <div id="taskDetails"></div>
+    <div class="modal-actions"><button id="editTaskButton" class="primary-button">✎ Редагувати</button><button id="deleteTaskButton" class="danger-button">Видалити</button></div>
+  </dialog>
+
+  <dialog id="aboutModal" class="app-modal">
+    <div class="modal-heading"><div><small>ABOUT PROJECT</small><h2>Про StudyPlanner</h2></div><button class="close-modal" data-close="aboutModal" aria-label="Закрити">✕</button></div>
+    <div class="about-hero"><span class="about-logo">✦</span><div><h3>StudyPlanner</h3><p class="muted">Планувальник навчальних завдань</p></div></div>
+    <p>StudyPlanner — навчальний вебзастосунок, який допомагає організувати навчання в одному місці. Створюй завдання, додавай описи й терміни, визначай пріоритети та відстежуй прогрес.</p>
+    <div class="about-features"><div>✓ Керування завданнями</div><div>✓ Статистика та прогрес</div><div>✓ Голосове керування</div><div>✓ AI-помічник</div><div>✓ Збереження в браузері</div></div>
+    <button class="primary-button" data-close="aboutModal">Зрозуміло</button>
+  </dialog>
+
+  <dialog id="statsModal" class="app-modal">
+    <div class="modal-heading"><div><small>OVERVIEW</small><h2>Детальна статистика</h2></div><button class="close-modal" data-close="statsModal" aria-label="Закрити">✕</button></div>
+    <div class="stats-grid">
+      <div class="stat-card"><small>Усього</small><strong id="modalTotal">0</strong></div>
+      <div class="stat-card"><small>Виконано</small><strong id="modalCompleted">0</strong></div>
+      <div class="stat-card"><small>Активні</small><strong id="modalRemaining">0</strong></div>
+      <div class="stat-card"><small>Прогрес</small><strong id="modalProgress">0%</strong></div>
+    </div>
+    <h3>Розподіл завдань</h3><div id="modalCategoryStats" class="category-stats"></div>
+    <button class="primary-button" data-close="statsModal">Закрити</button>
+  </dialog>
+
+  <script src="script.js"></script>
+  <script src="voice.js"></script>
+</body>
+</html>
